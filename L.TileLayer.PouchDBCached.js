@@ -8,7 +8,7 @@ L.TileLayer.addInitHook(function() {
 		return;
 	}
 
-	this._db = new PouchDB('offline-tiles');
+	// this._db = new PouchDB('offline-tiles'); :SVR93:
 	this._canvas = document.createElement('canvas');
 
 	if (!(this._canvas.getContext && this._canvas.getContext('2d'))) {
@@ -52,7 +52,7 @@ L.TileLayer.include({
 			tile.onload = L.bind(this._tileOnLoad, this, done, tile);
 		}
 
-		tile.src = tileUrl;
+		// tile.src = tileUrl; :SVR93:
 		return tile;
 	},
 
@@ -74,11 +74,11 @@ L.TileLayer.include({
 					}
 					tile.crossOrigin = 'Anonymous';
 					tile.src = tileUrl;
-					tile.onerror = function(ev) {
+					tile.onerror = function() {
 						// If the tile is too old but couldn't be fetched from the network,
 						//   serve the one still in cache.
 						this.src = data.dataUrl;
-					}
+					};
 				} else {
 					// Serve tile from cached data
 					console.log('Tile is cached: ', tileUrl);
@@ -155,7 +155,7 @@ L.TileLayer.include({
 			var tileBounds = L.bounds(
 				northEastPoint.divideBy(tileSize)._floor(),
 				southWestPoint.divideBy(tileSize)._floor());
-
+			var point = null;
 			for (var j = tileBounds.min.y; j <= tileBounds.max.y; j++) {
 				for (var i = tileBounds.min.x; i <= tileBounds.max.x; i++) {
 					point = new L.Point(i, j);
@@ -170,7 +170,7 @@ L.TileLayer.include({
 			minZoom: minZoom,
 			maxZoom: maxZoom,
 			queueLength: queue.length
-		}
+		};
 		this.fire('seedstart', seedData);
 		var tile = this._createTile();
 		tile._layer = this;
