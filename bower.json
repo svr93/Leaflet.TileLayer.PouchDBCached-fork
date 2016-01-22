@@ -1,5 +1,5 @@
 {
-  "name": "Leaflet.TileLayer.PouchDBCached",
+  "name": "Leaflet.TileLayer.PouchDBCached-fork",
   "version": "0.2.0",
   "authors": [
     "Iván Sánchez Ortega <ivan@mazemap.no>"
