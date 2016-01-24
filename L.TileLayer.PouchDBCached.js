@@ -23,6 +23,7 @@ L.TileLayer.prototype.options.useCache     = false;
 L.TileLayer.prototype.options.saveToCache  = true;
 L.TileLayer.prototype.options.useOnlyCache = false;
 L.TileLayer.prototype.options.cacheMaxAge  = 24*3600*1000;
+L.TileLayer.prototype.options.tileDataUrlFormat = 'img/webp';
 
 
 L.TileLayer.include({
@@ -83,7 +84,7 @@ L.TileLayer.include({
 					// Serve tile from cached data
 					console.log('Tile is cached: ', tileUrl);
 					tile.onload = this._tileOnLoad.bind(this, done, tile);
-					tile.src = data.dataUrl;    // data.dataUrl is already a base64-encoded PNG image.
+					tile.src = data.dataUrl;    // data.dataUrl is already a base64-encoded WEBP image.
 				}
 			} else {
 				this.fire('tilecachemiss', {
@@ -122,7 +123,7 @@ L.TileLayer.include({
 		var context = this._canvas.getContext('2d');
 		context.drawImage(tile, 0, 0);
 
-		var dataUrl = this._canvas.toDataURL('image/png');
+		var dataUrl = this._canvas.toDataURL(this.options.tileDataUrlFormat);
 		var doc = {dataUrl: dataUrl, timestamp: Date.now()};
 
 		if (existingRevision) {
