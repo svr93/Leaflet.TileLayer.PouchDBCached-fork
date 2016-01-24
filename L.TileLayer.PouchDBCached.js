@@ -31,7 +31,7 @@ L.TileLayer.include({
 	createTile: function(coords, done) {
 		var tile = document.createElement('img');
 
-		tile.onerror = L.bind(this._tileOnError, this, done, tile);
+		tile.onerror = this._tileOnError.bind(this, done, tile);
 
 		if (this.options.crossOrigin) {
 			tile.crossOrigin = '';
@@ -49,7 +49,7 @@ L.TileLayer.include({
 			this._db.get(tileUrl, {revs_info: true}, this._onCacheLookup(tile, tileUrl, done));
 		} else {
 			// Fall back to standard behaviour
-			tile.onload = L.bind(this._tileOnLoad, this, done, tile);
+			tile.onload = this._tileOnLoad.bind(this, done, tile);
 		}
 
 		// tile.src = tileUrl; :SVR93:
@@ -70,7 +70,7 @@ L.TileLayer.include({
 					console.log('Tile is too old: ', tileUrl);
 
 					if (this.options.saveToCache) {
-						tile.onload = L.bind(this._saveTile, this, tile, tileUrl, data._revs_info[0].rev, done);
+						tile.onload = this._saveTile.bind(this, tile, tileUrl, data._revs_info[0].rev, done);
 					}
 					tile.crossOrigin = 'Anonymous';
 					tile.src = tileUrl;
@@ -82,7 +82,7 @@ L.TileLayer.include({
 				} else {
 					// Serve tile from cached data
 					console.log('Tile is cached: ', tileUrl);
-					tile.onload = L.bind(this._tileOnLoad, this, done, tile);
+					tile.onload = this._tileOnLoad.bind(this, done, tile);
 					tile.src = data.dataUrl;    // data.dataUrl is already a base64-encoded PNG image.
 				}
 			} else {
@@ -99,9 +99,9 @@ L.TileLayer.include({
 					// Online, not cached, request the tile normally
 // 					console.log('Requesting tile normally', tileUrl);
 					if (this.options.saveToCache) {
-						tile.onload = L.bind(this._saveTile, this, tile, tileUrl, null, done);
+						tile.onload = this._saveTile.bind(this, tile, tileUrl, null, done);
 					} else {
-						tile.onload = L.bind(this._tileOnLoad, this, done, tile);
+						tile.onload = this._tileOnLoad.bind(this, done, tile);
 					}
 					tile.crossOrigin = 'Anonymous';
 					tile.src = tileUrl;
