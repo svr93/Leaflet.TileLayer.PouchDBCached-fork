@@ -23,7 +23,7 @@ L.TileLayer.prototype.options.useCache     = false;
 L.TileLayer.prototype.options.saveToCache  = true;
 L.TileLayer.prototype.options.useOnlyCache = false;
 L.TileLayer.prototype.options.cacheMaxAge  = 24*3600*1000;
-L.TileLayer.prototype.options.tileDataUrlFormat = 'img/webp';
+L.TileLayer.prototype.options.tileDataUrlFormat = 'image/webp';
 
 
 L.TileLayer.include({
@@ -51,6 +51,7 @@ L.TileLayer.include({
 		} else {
 			// Fall back to standard behaviour
 			tile.onload = this._tileOnLoad.bind(this, done, tile);
+			tile.src = tileUrl;
 		}
 
 		// tile.src = tileUrl; :SVR93:
